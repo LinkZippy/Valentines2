@@ -3,13 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My GitHub Page</title>
+    <title>Funny Valentine's Page ❤️</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        body {
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            background-color: pink;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            font-size: 3em;
+            color: red;
+            margin-top: 50px;
+            text-shadow: 3px 3px white;
+        }
+        .valentine-box {
+            background: white;
+            padding: 30px;
+            margin: 20px auto;
+            width: 50%;
+            border-radius: 20px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+        }
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.5em;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease-in-out;
+        }
+        #yes {
+            background: red;
+            color: white;
+        }
+        #yes:hover {
+            background: darkred;
+        }
+        #no {
+            background: gray;
+            color: white;
+            position: absolute;
+        }
+        @keyframes moveAway {
+            0% { left: 0; top: 0; }
+            25% { left: 200px; top: 50px; }
+            50% { left: -200px; top: -50px; }
+            75% { left: 100px; top: -100px; }
+            100% { left: -100px; top: 100px; }
+        }
+        .runaway {
+            animation: moveAway 0.3s linear forwards;
+        }
+        .hearts {
+            font-size: 50px;
+            color: red;
+            position: absolute;
+            animation: floatUp 3s infinite;
+        }
+        @keyframes floatUp {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(-200px); opacity: 0; }
+        }
     </style>
 </head>
 <body>
-    <h1>Welcome to My Website</h1>
-    <p>This is a simple website hosted on GitHub Pages!</p>
+    <h1>Will You Be My Valentine? ❤️</h1>
+    <div class="valentine-box">
+        <button id="yes" class="btn">Yes</button>
+        <button id="no" class="btn">No</button>
+    </div>
+
+    <script>
+        const noButton = document.getElementById("no");
+
+        noButton.addEventListener("mouseover", function () {
+            noButton.classList.add("runaway");
+            setTimeout(() => {
+                noButton.style.top = Math.random() * window.innerHeight + "px";
+                noButton.style.left = Math.random() * window.innerWidth + "px";
+                noButton.classList.remove("runaway");
+            }, 300);
+        });
+
+        document.getElementById("yes").addEventListener("click", function() {
+            alert("Yay! Now you owe me chocolates 🍫❤️");
+            document.body.innerHTML += `<div class="hearts">❤️</div>`;
+        });
+
+        setInterval(() => {
+            const heart = document.createElement("div");
+            heart.classList.add("hearts");
+            heart.style.left = Math.random() * window.innerWidth + "px";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 3000);
+        }, 500);
+    </script>
 </body>
 </html>
