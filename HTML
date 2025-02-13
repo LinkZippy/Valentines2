@@ -1,104 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Funny Valentine's Page ❤️</title>
-    <style>
-        body {
-            font-family: "Comic Sans MS", cursive, sans-serif;
-            background-color: pink;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-        h1 {
-            font-size: 3em;
-            color: red;
-            margin-top: 50px;
-            text-shadow: 3px 3px white;
-        }
-        .valentine-box {
-            background: white;
-            padding: 30px;
-            margin: 20px auto;
-            width: 50%;
-            border-radius: 20px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-        }
-        .btn {
-            padding: 15px 30px;
-            font-size: 1.5em;
-            border: none;
-            cursor: pointer;
-            border-radius: 10px;
-            transition: all 0.3s ease-in-out;
-        }
-        #yes {
-            background: red;
-            color: white;
-        }
-        #yes:hover {
-            background: darkred;
-        }
-        #no {
-            background: gray;
-            color: white;
-            position: absolute;
-        }
-        @keyframes moveAway {
-            0% { left: 0; top: 0; }
-            25% { left: 200px; top: 50px; }
-            50% { left: -200px; top: -50px; }
-            75% { left: 100px; top: -100px; }
-            100% { left: -100px; top: 100px; }
-        }
-        .runaway {
-            animation: moveAway 0.3s linear forwards;
-        }
-        .hearts {
-            font-size: 50px;
-            color: red;
-            position: absolute;
-            animation: floatUp 3s infinite;
-        }
-        @keyframes floatUp {
-            from { transform: translateY(0); opacity: 1; }
-            to { transform: translateY(-200px); opacity: 0; }
-        }
-    </style>
-</head>
-<body>
-    <h1>Will You Be My Valentine? ❤️</h1>
-    <div class="valentine-box">
-        <button id="yes" class="btn">Yes</button>
-        <button id="no" class="btn">No</button>
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import FloatingHearts from "@/components/FloatingHearts";
+import EvasiveButton from "@/components/EvasiveButton";
+import confetti from 'canvas-confetti';
+
+export default function Valentine() {
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  const handleYesClick = () => {
+    setShowConfetti(true);
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#ff69b4', '#ff1493', '#ff0000']
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-pink-50 flex items-center justify-center relative overflow-hidden">
+      <FloatingHearts />
+      
+      <Card className="w-full max-w-lg mx-4 p-8 bg-white/80 backdrop-blur-sm shadow-xl">
+        <motion.div
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="text-center"
+        >
+          <h1 className="text-4xl md:text-5xl font-bold text-pink-600 mb-8">
+            Will You Be My Valentine?
+          </h1>
+
+          <div className="flex flex-col md:flex-row gap-4 justify-center items-center mt-8">
+            <Button
+              onClick={handleYesClick}
+              className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-4 text-xl"
+            >
+              Yes
+            </Button>
+
+            <EvasiveButton />
+          </div>
+
+          {showConfetti && (
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-8 text-2xl text-pink-600 font-semibold"
+            >
+              Yay! Happy Valentine's Day! ❤️
+            </motion.p>
+          )}
+        </motion.div>
+      </Card>
     </div>
-
-    <script>
-        const noButton = document.getElementById("no");
-
-        noButton.addEventListener("mouseover", function () {
-            noButton.classList.add("runaway");
-            setTimeout(() => {
-                noButton.style.top = Math.random() * window.innerHeight + "px";
-                noButton.style.left = Math.random() * window.innerWidth + "px";
-                noButton.classList.remove("runaway");
-            }, 300);
-        });
-
-        document.getElementById("yes").addEventListener("click", function() {
-            alert("Yay! Now you owe me chocolates 🍫❤️");
-            document.body.innerHTML += `<div class="hearts">❤️</div>`;
-        });
-
-        setInterval(() => {
-            const heart = document.createElement("div");
-            heart.classList.add("hearts");
-            heart.style.left = Math.random() * window.innerWidth + "px";
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 3000);
-        }, 500);
-    </script>
-</body>
-</html>
+  );
+}
